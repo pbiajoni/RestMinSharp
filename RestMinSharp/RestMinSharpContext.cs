@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace RestMinSharp
 {
-    public class RestSharpMinContext : IRestSharpMinContext
+    public class RestMinSharpContext : IRestMinSharpContext
     {
         private readonly RestClient _client;
         private string BaseUrl { get; set; }
-        public RestSharpMinContext()
+        public RestMinSharpContext()
         {
         }
-        public RestSharpMinContext(string baseUrl)
+        public RestMinSharpContext(string baseUrl)
         {
             BaseUrl = baseUrl ?? throw new ArgumentNullException(nameof(baseUrl));
             _client = new RestClient(this.BaseUrl);

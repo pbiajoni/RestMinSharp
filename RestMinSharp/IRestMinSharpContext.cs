@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RestMinSharp
 {
-    public interface IRestSharpMinContext
+    public interface IRestMinSharpContext
     {
         void AddBearerToken(string token);
         Task<RequestResult<T>> DeleteAsync<T>(string url);
