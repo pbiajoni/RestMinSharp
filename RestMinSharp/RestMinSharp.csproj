@@ -5,6 +5,8 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Company>Pablo Biajoni</Company>
     <Description>Minimum package required to use RestSharp</Description>
+    <Copyright>Pablo Biajoni</Copyright>
+    <RepositoryUrl>https://github.com/pbiajoni/RestMinSharp</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
