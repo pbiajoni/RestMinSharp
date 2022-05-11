@@ -19,7 +19,7 @@ namespace RestMinSharp
         }
         public RestMinSharpContext(string baseUrl)
         {
-            BaseUrl = baseUrl ?? throw new ArgumentNullException(nameof(baseUrl));
+            BaseUrl = baseUrl ?? throw new ArgumentNullException("BaseUrl");
             _client = new RestClient(this.BaseUrl);
 
         }

@@ -10,13 +10,13 @@ namespace RestMinSharp.Notifications
 
         public Notification(string key, string message)
         {
-            Key = key ?? throw new ArgumentNullException(nameof(key));
-            Message = message ?? throw new ArgumentNullException(nameof(message));
+            Key = key ?? throw new ArgumentNullException("Key");
+            Message = message ?? throw new ArgumentNullException("Message");
         }
 
         public Notification(string key, string message, string expected) : this(key, message)
         {
-            Expected = expected ?? throw new ArgumentNullException(nameof(expected));
+            Expected = expected ?? throw new ArgumentNullException("Expected");
         }
 
         public string Key { get; set; }
