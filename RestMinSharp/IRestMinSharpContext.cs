@@ -1,7 +1,7 @@
 ﻿
 using RestMinSharp.Operations;
+using RestMinSharp.Results;
 using RestSharp;
-using RestSharpMin.Results;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

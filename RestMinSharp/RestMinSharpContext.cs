@@ -2,8 +2,8 @@
 using Newtonsoft.Json;
 using RestMinSharp.Notifications;
 using RestMinSharp.Operations;
+using RestMinSharp.Results;
 using RestSharp;
-using RestSharpMin.Results;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RestSharpMin.Results
+namespace RestMinSharp.Results
 {
     public class RequestResult<T>
     {
