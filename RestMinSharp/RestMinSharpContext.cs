@@ -29,7 +29,7 @@ namespace RestMinSharp
             _client.AddDefaultHeader("Authorization", "Bearer " + token);
         }
 
-        public async Task<RequestResult<T>> GetAsync<T>(string url, List<Parameter> parameters = null)
+        public async Task<RequestResult<T>> GetAsync<T>(string url)
         {
             RestRequest request = new RestRequest(url, Method.Get);
             request.AddHeader("Content-Type", "application/json");
