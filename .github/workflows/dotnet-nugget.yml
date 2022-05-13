@@ -1,9 +1,6 @@
 name: Nugget
 
 on:
-  create:
-    branches: 
-      - release/**
   push:
     branches:
     - main
