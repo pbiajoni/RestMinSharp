@@ -13,6 +13,14 @@ namespace RestMinSharp
     public class RestMinSharpContext : IRestMinSharpContext
     {
         private readonly RestClient _client;
+        private bool _hasJwtToken = false;
+        public bool HasJwtToken
+        {
+            get
+            {
+                return _hasJwtToken;
+            }
+        }
         private string BaseUrl { get; set; }
         public RestMinSharpContext()
         {
@@ -21,11 +29,11 @@ namespace RestMinSharp
         {
             BaseUrl = baseUrl ?? throw new ArgumentNullException("BaseUrl");
             _client = new RestClient(this.BaseUrl);
-
         }
 
         public void AddBearerToken(string token)
         {
+            _hasJwtToken = true;
             _client.AddDefaultHeader("Authorization", "Bearer " + token);
         }
 
