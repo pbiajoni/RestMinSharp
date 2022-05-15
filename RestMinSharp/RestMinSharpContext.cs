@@ -37,23 +37,35 @@ namespace RestMinSharp
             _client.AddDefaultHeader("Authorization", "Bearer " + token);
         }
 
-        public async Task<RequestResult<T>> GetAsync<T>(string url)
+        public RequestResult<T> CreateResult<T>(RestResponse res)
         {
-            RestRequest request = new RestRequest(url, Method.Get);
-            request.AddHeader("Content-Type", "application/json");
-            var res = await _client.ExecuteAsync(request);
             var result = new RequestResult<T>();
-
             if (res.IsSuccessful)
             {
                 result.Data = JsonConvert.DeserializeObject<T>(res.Content);
             }
             else
             {
-                result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
+                if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    result.IsUnauthorized = true;
+                    result.Notifications.Add(new Notification("Unauthorized", "Unauthorized"));
+                }
+                else
+                {
+                    result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
+                }
             }
 
             return result;
+        }
+
+        public async Task<RequestResult<T>> GetAsync<T>(string url)
+        {
+            RestRequest request = new RestRequest(url, Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            var res = await _client.ExecuteAsync(request);
+            return CreateResult<T>(res);
         }
 
         public async Task<RequestResult<T>> DeleteAsync<T>(string url)
@@ -61,38 +73,14 @@ namespace RestMinSharp
             var request = new RestRequest(url, Method.Delete);
             request.AddHeader("Content-Type", "application/json");
             var res = await _client.ExecuteAsync(request);
-
-            var result = new RequestResult<T>();
-
-            if (res.IsSuccessful)
-            {
-                result.Data = JsonConvert.DeserializeObject<T>(res.Content);
-            }
-            else
-            {
-                result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
-            }
-
-            return result;
+            return CreateResult<T>(res);
         }
         public async Task<RequestResult<T>> PutAsync<T>(string url)
         {
             var request = new RestRequest(url, Method.Put);
             request.AddHeader("Content-Type", "application/json");
             var res = await _client.ExecuteAsync(request);
-
-            var result = new RequestResult<T>();
-
-            if (res.IsSuccessful)
-            {
-                result.Data = JsonConvert.DeserializeObject<T>(res.Content);
-            }
-            else
-            {
-                result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
-            }
-
-            return result;
+            return CreateResult<T>(res);
         }
         public async Task<RequestResult<T>> PutAsync<T>(string url, object payload)
         {
@@ -100,19 +88,7 @@ namespace RestMinSharp
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(payload);
             var res = await _client.ExecuteAsync(request);
-
-            var result = new RequestResult<T>();
-
-            if (res.IsSuccessful)
-            {
-                result.Data = JsonConvert.DeserializeObject<T>(res.Content);
-            }
-            else
-            {
-                result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
-            }
-
-            return result;
+            return CreateResult<T>(res);
         }
         public async Task<RequestResult<T>> PostAsync<T>(string url, object payload)
         {
@@ -120,18 +96,7 @@ namespace RestMinSharp
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(payload);
             var res = await _client.ExecuteAsync(request);
-            var result = new RequestResult<T>();
-
-            if (res.IsSuccessful)
-            {
-                result.Data = JsonConvert.DeserializeObject<T>(res.Content);
-            }
-            else
-            {
-                result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
-            }
-
-            return result;
+            return CreateResult<T>(res);
         }
 
         public async Task<RequestResult<T>> PatchAsync<T>(string url, List<PatchOperation> operations)
@@ -140,18 +105,7 @@ namespace RestMinSharp
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(operations);
             var res = await _client.ExecuteAsync(request);
-            var result = new RequestResult<T>();
-
-            if (res.IsSuccessful)
-            {
-                result.Data = JsonConvert.DeserializeObject<T>(res.Content);
-            }
-            else
-            {
-                result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
-            }
-
-            return result;
+            return CreateResult<T>(res);
         }
 
         public async Task<RequestResult<T>> PatchAsync<T>(string url, PatchOperation operations)
