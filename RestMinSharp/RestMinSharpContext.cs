@@ -14,7 +14,6 @@ namespace RestMinSharp
     {
         private readonly RestClient _client;
         private bool _hasJwtToken = false;
-        public bool LastIsAuthorized { get; internal set; }
         public bool HasJwtToken
         {
             get
@@ -46,7 +45,6 @@ namespace RestMinSharp
             Console.WriteLine(res.Content);
             if (res.IsSuccessful)
             {
-                LastIsAuthorized = true;
                 result.Data = JsonConvert.DeserializeObject<T>(res.Content);
             }
             else
@@ -55,12 +53,10 @@ namespace RestMinSharp
                 {
                     result.IsUnauthorized = true;
                     Console.WriteLine("Is Unauthorized");
-                    LastIsAuthorized = false;
                     result.Notifications.Add(new Notification("Unauthorized", "Unauthorized"));
                 }
                 else
                 {
-                    LastIsAuthorized = true;
                     Console.WriteLine("Has Notifications");
                     result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
                 }
