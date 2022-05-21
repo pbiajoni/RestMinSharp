@@ -40,6 +40,7 @@ namespace RestMinSharp
         public RequestResult<T> CreateResult<T>(RestResponse res)
         {
             var result = new RequestResult<T>();
+            Console.WriteLine(res.Content);
             if (res.IsSuccessful)
             {
                 result.Data = JsonConvert.DeserializeObject<T>(res.Content);
@@ -49,10 +50,12 @@ namespace RestMinSharp
                 if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     result.IsUnauthorized = true;
+                    Console.WriteLine("Is Unauthorized");
                     result.Notifications.Add(new Notification("Unauthorized", "Unauthorized"));
                 }
                 else
                 {
+                    Console.WriteLine("Has Notifications");
                     result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
                 }
             }
