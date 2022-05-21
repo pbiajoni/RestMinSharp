@@ -14,6 +14,7 @@ namespace RestMinSharp
     {
         private readonly RestClient _client;
         private bool _hasJwtToken = false;
+        public string Token { get; internal set; }
         public bool HasJwtToken
         {
             get
@@ -35,6 +36,7 @@ namespace RestMinSharp
         public void AddBearerToken(string token)
         {
             _hasJwtToken = true;
+            Token = token;
             _client.AddDefaultHeader("Authorization", "Bearer " + token);
         }
 
