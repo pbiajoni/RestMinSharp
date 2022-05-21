@@ -24,13 +24,12 @@ namespace RestMinSharp
         private string BaseUrl { get; set; }
         public RestMinSharpContext()
         {
-            LastIsAuthorized = false;
+
         }
         public RestMinSharpContext(string baseUrl)
         {
             BaseUrl = baseUrl ?? throw new ArgumentNullException("BaseUrl");
             _client = new RestClient(this.BaseUrl);
-            LastIsAuthorized = false;
         }
 
         public void AddBearerToken(string token)
