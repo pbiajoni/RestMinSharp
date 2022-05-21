@@ -7,7 +7,7 @@
     <Description>Minimum package required to use RestSharp</Description>
     <Copyright>Pablo Biajoni</Copyright>
     <RepositoryUrl>https://github.com/pbiajoni/RestMinSharp</RepositoryUrl>
-    <Version>1.0.9</Version>
+    <Version>1.0.10</Version>
     <Authors>Pablo Biajoni</Authors>
   </PropertyGroup>
 
