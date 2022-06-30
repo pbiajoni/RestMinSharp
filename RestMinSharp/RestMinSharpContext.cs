@@ -12,6 +12,7 @@ namespace RestMinSharp
 {
     public class RestMinSharpContext : IRestMinSharpContext
     {
+        public static bool  ShowJsonContent { get; set; }
         private readonly RestClient _client;
         private bool _hasJwtToken = false;
         public string Token { get; internal set; }
@@ -43,7 +44,12 @@ namespace RestMinSharp
         public RequestResult<T> CreateResult<T>(RestResponse res)
         {
             var result = new RequestResult<T>();
-            Console.WriteLine(res.Content);
+
+            if (ShowJsonContent)
+            {
+                Console.WriteLine(res.Content);
+            }
+
             if (res.IsSuccessful)
             {
                 result.Data = JsonConvert.DeserializeObject<T>(res.Content);
