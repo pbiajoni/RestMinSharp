@@ -12,7 +12,7 @@ namespace RestMinSharp
 {
     public class RestMinSharpContext : IRestMinSharpContext
     {
-        public static bool  ShowJsonContent { get; set; }
+        public bool ShowJsonContent { get; set; }
         private readonly RestClient _client;
         private bool _hasJwtToken = false;
         public string Token { get; internal set; }
@@ -32,6 +32,11 @@ namespace RestMinSharp
         {
             BaseUrl = baseUrl ?? throw new ArgumentNullException("BaseUrl");
             _client = new RestClient(this.BaseUrl);
+        }
+
+        public RestMinSharpContext(string baseUrl, bool showJsonContent) : this(baseUrl)
+        {
+            ShowJsonContent = showJsonContent;
         }
 
         public void AddBearerToken(string token)
@@ -59,12 +64,19 @@ namespace RestMinSharp
                 if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     result.IsUnauthorized = true;
-                    Console.WriteLine("Is Unauthorized");
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine("Is Unauthorized");
+                    }
+
                     result.Notifications.Add(new Notification("Unauthorized", "Unauthorized"));
                 }
                 else
                 {
-                    Console.WriteLine("Has Notifications");
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine("Has Notifications");
+                    }
                     result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
                 }
             }
