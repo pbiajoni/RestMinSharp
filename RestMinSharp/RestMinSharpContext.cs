@@ -91,7 +91,6 @@ namespace RestMinSharp
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
         }
-
         public async Task<RequestResult<T>> DeleteAsync<T>(string url)
         {
             var request = new RestRequest(url, Method.Delete);
@@ -122,7 +121,21 @@ namespace RestMinSharp
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
         }
-
+        public async Task<RequestResult<T>> PostAsync<T>(string url, string json)
+        {
+            var request = new RestRequest(url, Method.Post);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddStringBody(json, DataFormat.Json);
+            var res = await _client.ExecuteAsync(request);
+            return CreateResult<T>(res);
+        }
+        public async Task<RequestResult<T>> Upload<T>(string url, string name, string filePath)
+        {
+            var request = new RestRequest(url, Method.Post);
+            request.AddFile(name, filePath, name);
+            var res = await _client.ExecuteAsync(request);
+            return CreateResult<T>(res);
+        }
         public async Task<RequestResult<T>> PatchAsync<T>(string url, List<PatchOperation> operations)
         {
             var request = new RestRequest(url, Method.Patch);
@@ -131,7 +144,6 @@ namespace RestMinSharp
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
         }
-
         public async Task<RequestResult<T>> PatchAsync<T>(string url, PatchOperation operations)
         {
             return await PatchAsync<T>(url, new List<PatchOperation>()
