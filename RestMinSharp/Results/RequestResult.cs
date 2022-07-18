@@ -6,7 +6,7 @@ namespace RestMinSharp.Results
 {
     public class RequestResult<T>
     {
-        public bool IsUnauthorized { get; internal set; }
+        public bool IsAuthorized { get; internal set; }
         public List<Notification> Notifications { get; set; } = new List<Notification>();
         public bool HasNotifications { get => Notifications.Any(); }
         public T Data { get; set; }
