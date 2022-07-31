@@ -63,7 +63,11 @@ namespace RestMinSharp
             }
             else
             {
-                if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                if (res.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    result.Notifications.Add(new Notification("InternalServerError", res.Content));
+                }
+                else if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     this.IsAuthorized = result.IsAuthorized = false;
                     if (ShowJsonContent)
