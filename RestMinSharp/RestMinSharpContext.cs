@@ -65,6 +65,11 @@ namespace RestMinSharp
             {
                 if (res.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                 {
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine(res.Content);
+                    }
+
                     result.Notifications.Add(new Notification("InternalServerError", res.Content));
                 }
                 else if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
