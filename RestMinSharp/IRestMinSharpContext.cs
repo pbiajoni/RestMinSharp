@@ -18,6 +18,7 @@ namespace RestMinSharp
         Task<RequestResult<T>> PostAsync<T>(string url, string json);
         Task<RequestResult<T>> PutAsync<T>(string url);
         Task<RequestResult<T>> PutAsync<T>(string url, object payload);
-        Task<RequestResult<T>> Upload<T>(string url, string name, string filePath);
+        Task<RequestResult<T>> Upload<T>(string url, string name, byte[] bytes, Method method);
+        Task<RequestResult<T>> Upload<T>(string url, string name, string filePath, Method method);
     }
 }

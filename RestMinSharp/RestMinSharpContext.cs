@@ -142,17 +142,17 @@ namespace RestMinSharp
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
         }
-        public async Task<RequestResult<T>> Upload<T>(string url, string name, string filePath)
+        public async Task<RequestResult<T>> Upload<T>(string url, string name, string filePath, Method method)
         {
-            var request = new RestRequest(url, Method.Post);
+            var request = new RestRequest(url, method);
             request.AddFile(name, filePath, name);
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
         }
 
-        public async Task<RequestResult<T>> Upload<T>(string url, string name, byte[] bytes)
+        public async Task<RequestResult<T>> Upload<T>(string url, string name, byte[] bytes, Method method)
         {
-            var request = new RestRequest(url, Method.Post);
+            var request = new RestRequest(url, method);
             request.AddFile(name, bytes, name);
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
