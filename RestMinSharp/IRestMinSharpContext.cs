@@ -12,6 +12,7 @@ namespace RestMinSharp
         void AddBearerToken(string token);
         Task<RequestResult<T>> DeleteAsync<T>(string url);
         Task<RequestResult<T>> GetAsync<T>(string url);
+        Task<MemoryStreamRequestResult> GetStreamAsync(string url);
         Task<RequestResult<T>> PatchAsync<T>(string url, List<PatchOperation> operations);
         Task<RequestResult<T>> PatchAsync<T>(string url, PatchOperation operations);
         Task<RequestResult<T>> PostAsync<T>(string url, object payload);

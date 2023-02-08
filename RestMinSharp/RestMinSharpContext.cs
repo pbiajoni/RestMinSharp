@@ -6,6 +6,7 @@ using RestMinSharp.Results;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace RestMinSharp
@@ -47,6 +48,55 @@ namespace RestMinSharp
             _client.AddDefaultHeader("Authorization", "Bearer " + token);
         }
 
+        public MemoryStreamRequestResult CreateMemoryStreamResult(RestResponse res)
+        {
+            var result = new MemoryStreamRequestResult();
+
+            if (ShowJsonContent)
+            {
+                Console.WriteLine(res.Content);
+            }
+
+            if (res.IsSuccessful)
+            {
+                this.IsAuthorized = result.IsAuthorized = true;
+                result.Stream = new MemoryStream(res.RawBytes);
+            }
+            else
+            {
+                if (res.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine(res.Content);
+                    }
+
+                    result.Notifications.Add(new Notification("InternalServerError", res.Content));
+                }
+                else if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    this.IsAuthorized = result.IsAuthorized = false;
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine("Is Unauthorized");
+                    }
+
+                    result.Notifications.Add(new Notification("Unauthorized", "Unauthorized"));
+                }
+                else
+                {
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine("Has Notifications");
+                    }
+
+                    this.IsAuthorized = result.IsAuthorized = true;
+                    result.Notifications = JsonConvert.DeserializeObject<List<Notification>>(res.Content);
+                }
+            }
+
+            return result;
+        }
         public RequestResult<T> CreateResult<T>(RestResponse res)
         {
             var result = new RequestResult<T>();
@@ -171,6 +221,13 @@ namespace RestMinSharp
             {
                 operations
             });
+        }
+
+        public async Task<MemoryStreamRequestResult> GetStreamAsync(string url)
+        {
+            var request = new RestRequest(url, Method.Get);
+            var response = await _client.ExecuteAsync(request);
+            return CreateMemoryStreamResult(response);
         }
     }
 }
