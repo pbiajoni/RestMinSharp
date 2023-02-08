@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Company>Pablo Biajoni</Company>
-    <Description>Minimum package required to use RestSharp</Description>
+    <Description>A package that simplifies and makes the use of RestSharp more intuitive.</Description>
     <Copyright>Pablo Biajoni</Copyright>
     <RepositoryUrl>https://github.com/pbiajoni/RestMinSharp</RepositoryUrl>
     <Version>1.0.23</Version>
