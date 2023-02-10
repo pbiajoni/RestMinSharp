@@ -7,6 +7,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestMinSharp
@@ -41,10 +42,25 @@ namespace RestMinSharp
             ShowJsonContent = showJsonContent;
         }
 
+        [Obsolete("Use SetBearerToken instead")]
         public void AddBearerToken(string token)
         {
             _hasJwtToken = true;
             Token = token;
+            _client.AddDefaultHeader("Authorization", "Bearer " + token);
+        }
+
+        public void SetBearerToken(string token)
+        {
+            _hasJwtToken = true;
+            Token = token;
+
+            if (_client.DefaultParameters != null && _client.DefaultParameters.Any(x => x.Name == "Authorization"))
+            {
+                var bearer = _client.DefaultParameters.FirstOrDefault(x => x.Name == "Authorization");
+                _client.DefaultParameters.RemoveParameter(bearer);
+            }
+
             _client.AddDefaultHeader("Authorization", "Bearer " + token);
         }
 
@@ -146,13 +162,68 @@ namespace RestMinSharp
 
             return result;
         }
+        public ERequestResult<T, E> CreateEResult<T, E>(RestResponse res)
+        {
+            var result = new ERequestResult<T, E>();
 
+            if (ShowJsonContent)
+            {
+                Console.WriteLine(res.Content);
+            }
+
+            if (res.IsSuccessful)
+            {
+                this.IsAuthorized = result.IsAuthorized = true;
+                result.Data = JsonConvert.DeserializeObject<T>(res.Content);
+            }
+            else
+            {
+                if (res.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine(res.Content);
+                    }
+
+                    result.Notifications.Add(new Notification("InternalServerError", res.Content));
+                }
+                else if (res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    this.IsAuthorized = result.IsAuthorized = false;
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine("Is Unauthorized");
+                    }
+
+                    result.Notifications.Add(new Notification("Unauthorized", "Unauthorized"));
+                }
+                else
+                {
+                    if (ShowJsonContent)
+                    {
+                        Console.WriteLine("Has Notifications");
+                    }
+
+                    this.IsAuthorized = result.IsAuthorized = true;
+                    result.Error = JsonConvert.DeserializeObject<E>(res.Content);
+                }
+            }
+
+            return result;
+        }
         public async Task<RequestResult<T>> GetAsync<T>(string url)
         {
             RestRequest request = new RestRequest(url, Method.Get);
             request.AddHeader("Content-Type", "application/json");
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
+        }
+        public async Task<ERequestResult<T, E>> GetAsync<T, E>(string url)
+        {
+            RestRequest request = new RestRequest(url, Method.Get);
+            request.AddHeader("Content-Type", "application/json");
+            var res = await _client.ExecuteAsync(request);
+            return CreateEResult<T, E>(res);
         }
         public async Task<RequestResult<T>> DeleteAsync<T>(string url)
         {
@@ -176,6 +247,22 @@ namespace RestMinSharp
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        public async Task<ERequestResult<T, E>> PutAsync<T, E>(string url, object payload)
+        {
+            var request = new RestRequest(url, Method.Put);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddJsonBody(payload);
+            var res = await _client.ExecuteAsync(request);
+            return CreateEResult<T, E>(res);
+        }
         public async Task<RequestResult<T>> PostAsync<T>(string url, object payload)
         {
             var request = new RestRequest(url, Method.Post);
@@ -191,6 +278,14 @@ namespace RestMinSharp
             request.AddStringBody(json, DataFormat.Json);
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
+        }
+        public async Task<ERequestResult<T, E>> PostAsync<T, E>(string url, object payload)
+        {
+            var request = new RestRequest(url, Method.Post);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddJsonBody(payload);
+            var res = await _client.ExecuteAsync(request);
+            return CreateEResult<T, E>(res);
         }
         public async Task<RequestResult<T>> Upload<T>(string url, string name, string filePath, Method method)
         {
