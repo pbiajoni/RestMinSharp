@@ -231,6 +231,14 @@ namespace RestMinSharp
             var res = await _client.ExecuteAsync(request);
             return CreateResult<T>(res);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="payload"></param>
+        /// <returns></returns>
         public async Task<ERequestResult<T, E>> PutAsync<T, E>(string url, object payload)
         {
             var request = new RestRequest(url, Method.Put);
