@@ -7,6 +7,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestMinSharp
@@ -41,10 +42,25 @@ namespace RestMinSharp
             ShowJsonContent = showJsonContent;
         }
 
+        [Obsolete("Use SetBearerToken instead")]
         public void AddBearerToken(string token)
         {
             _hasJwtToken = true;
             Token = token;
+            _client.AddDefaultHeader("Authorization", "Bearer " + token);
+        }
+
+        public void SetBearerToken(string token)
+        {
+            _hasJwtToken = true;
+            Token = token;
+
+            if (_client.DefaultParameters != null && _client.DefaultParameters.Any(x => x.Name == "Authorization"))
+            {
+                var bearer = _client.DefaultParameters.FirstOrDefault(x => x.Name == "Authorization");
+                _client.DefaultParameters.RemoveParameter(bearer);
+            }
+
             _client.AddDefaultHeader("Authorization", "Bearer " + token);
         }
 
