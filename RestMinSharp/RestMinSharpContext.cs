@@ -121,7 +121,7 @@ namespace RestMinSharp
             {
                 Console.WriteLine(res.Content);
             }
-
+            result.RawData = res.Content;
             if (res.IsSuccessful)
             {
                 this.IsAuthorized = result.IsAuthorized = true;
@@ -171,6 +171,7 @@ namespace RestMinSharp
                 Console.WriteLine(res.Content);
             }
 
+            result.RawData = res.Content;
             if (res.IsSuccessful)
             {
                 this.IsAuthorized = result.IsAuthorized = true;
