@@ -22,7 +22,8 @@ namespace RestMinSharp
         Task<RequestResult<T>> PutAsync<T>(string url);
         Task<RequestResult<T>> PutAsync<T>(string url, object payload);
         Task<ERequestResult<T, E>> PutAsync<T, E>(string url, object payload);
-        void SetBearerToken(string token);
+		string SerializeObject(object obj);
+		void SetBearerToken(string token);
         Task<RequestResult<T>> Upload<T>(string url, string name, byte[] bytes, Method method);
         Task<RequestResult<T>> Upload<T>(string url, string name, string filePath, Method method);
     }
