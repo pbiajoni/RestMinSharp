@@ -9,7 +9,9 @@ namespace RestMinSharp
 {
     public interface IRestMinSharpContext
     {
-        void AddBearerToken(string token);
+		bool IdentReceivedJsonStrings { get; set; }
+
+		void AddBearerToken(string token);
         Task<RequestResult<T>> DeleteAsync<T>(string url);
         Task<RequestResult<T>> GetAsync<T>(string url);
         Task<ERequestResult<T, E>> GetAsync<T, E>(string url);
