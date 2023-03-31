@@ -2,6 +2,7 @@
 using RestMinSharp.Notifications;
 using RestMinSharp.Operations;
 using RestMinSharp.Results;
+using RestMinSharp.Utils;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,11 @@ namespace RestMinSharp
 		public delegate void OnSentJsonObjectEventHandler(string jsonString);
 
 		public event OnSentJsonObjectEventHandler OnSentJsonObject;
+
+		/// <summary>
+		/// Indent the JSON strings received in the OnContentReceived event.
+		/// </summary>
+		public bool IdentReceivedJsonStrings { get; set; } = true;
 
 		public string Token { get; internal set; }
 
@@ -79,6 +85,21 @@ namespace RestMinSharp
 			}
 
 			_client.AddDefaultHeader("Authorization", "Bearer " + token);
+		}
+
+		public void InvokeOnContentReceived(string content)
+		{
+			if (OnContentReceived != null)
+			{
+				if (IdentReceivedJsonStrings)
+				{
+					OnContentReceived?.Invoke(JsonUtils.IdentJsonString(content));
+				}
+				else
+				{
+					OnContentReceived?.Invoke(content);
+				}
+			}
 		}
 
 		#endregion Methods
@@ -145,7 +166,7 @@ namespace RestMinSharp
 			}
 
 			result.RawData = res.Content;
-			OnContentReceived?.Invoke(res.Content);
+			InvokeOnContentReceived(res.Content);
 
 			if (res.IsSuccessful)
 			{
@@ -198,7 +219,7 @@ namespace RestMinSharp
 			}
 
 			result.RawData = res.Content;
-			OnContentReceived?.Invoke(res.Content);
+			InvokeOnContentReceived(res.Content);
 
 			if (res.IsSuccessful)
 			{
