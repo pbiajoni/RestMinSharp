@@ -9,7 +9,8 @@ namespace RestMinSharp.Utils
 			try
 			{
 				return JsonConvert.SerializeObject(
-				JsonConvert.DeserializeObject(json), Formatting.Indented);
+				JsonConvert.DeserializeObject(json), Formatting.Indented,
+				new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 			}
 			catch
 			{
