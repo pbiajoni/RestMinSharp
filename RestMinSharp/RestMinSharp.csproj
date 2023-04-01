@@ -7,15 +7,15 @@
     <Description>A package that simplifies and makes the use of RestSharp more intuitive.</Description>
     <Copyright>Pablo Biajoni</Copyright>
     <RepositoryUrl>https://github.com/pbiajoni/RestMinSharp</RepositoryUrl>
-    <Version>1.0.27</Version>
+    <Version>1.0.28</Version>
     <Authors>Pablo Biajoni</Authors>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.4.0" />
+    <PackageReference Include="FluentValidation" Version="11.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="RestSharp" Version="108.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="109.0.1" />
   </ItemGroup>
 
 </Project>
