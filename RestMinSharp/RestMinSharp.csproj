@@ -7,7 +7,7 @@
     <Description>A package that simplifies and makes the use of RestSharp more intuitive.</Description>
     <Copyright>Biajoni Soluções em Software</Copyright>
     <RepositoryUrl>https://github.com/pbiajoni/RestMinSharp</RepositoryUrl>
-    <Version>1.0.29</Version>
+    <Version>1.0.30</Version>
     <Authors>Pablo Biajoni</Authors>
     <Title>RestMinSharp</Title>
     <PackageTags>RestSharp</PackageTags>

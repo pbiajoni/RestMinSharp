@@ -285,7 +285,6 @@ namespace RestMinSharp
 		public async Task<RequestResult<T>> DeleteAsync<T>(string url)
 		{
 			var request = new RestRequest(url, Method.Delete);
-			request.AddHeader("Content-Type", "application/json");
 			var res = await _client.ExecuteAsync(request);
 			return CreateResult<T>(res);
 		}
@@ -336,6 +335,13 @@ namespace RestMinSharp
 			return CreateResult<T>(res);
 		}
 
+		public async Task<RequestResult<T>> PostAsync<T>(string url)
+		{
+			var request = new RestRequest(url, Method.Post);
+			var res = await _client.ExecuteAsync(request);
+			return CreateResult<T>(res);
+		}
+
 		public async Task<RequestResult<T>> PostAsync<T>(string url, string json)
 		{
 			OnSentJsonObject?.Invoke(json);
@@ -352,6 +358,13 @@ namespace RestMinSharp
 			var request = new RestRequest(url, Method.Post);
 			request.AddHeader("Content-Type", "application/json");
 			request.AddJsonBody(payload);
+			var res = await _client.ExecuteAsync(request);
+			return CreateEResult<T, E>(res);
+		}
+
+		public async Task<ERequestResult<T, E>> PostAsync<T, E>(string url)
+		{
+			var request = new RestRequest(url, Method.Post);
 			var res = await _client.ExecuteAsync(request);
 			return CreateEResult<T, E>(res);
 		}
