@@ -37,3 +37,32 @@ The `IRestMinSharpContext` interface defines the main interface of RestMinSharp.
 - `PutAsync<T>(string url)`: sends a PUT request without a payload to the specified URL and returns a `RequestResult<T>` object
 - `PutAsync<T>(string url, object payload)`: sends a PUT request with a payload object to the specified URL and returns a `RequestResult<T>` object
 - `PutAsync<T, E>(string url, object payload)`: sends a PUT request with a payload object to the specified
+
+## Requirements
+
+- .NET Standard 2.0
+- RestSharp 106.11.7 or higher
+
+## Installation
+
+RestMinSharp is available as a NuGet package. You can install it using the NuGet Package Manager in Visual Studio or via the command line:
+
+```powershell
+Install-Package RestMinSharp
+```
+
+## Usage
+
+RestMinSharp provides an interface called `IRestMinSharpContext` that defines a set of methods to interact with RESTful APIs. You can create an instance of this interface using the `RestMinSharpContext` class:
+
+```csharp
+IRestMinSharpContext context = new RestMinSharpContext("https://api.example.com/");
+```
+
+Once you have an instance of `IRestMinSharpContext`, you can use its methods to send HTTP requests:
+
+```csharp
+var result = await context.GetAsync<MyModel>("my-endpoint");
+```
+
+The library provides support for various HTTP methods and supports deserialization of JSON responses to your models. RestMinSharp also includes an implementation of the `IRequestResult<T>` interface, which is a wrapper around the RestSharp `IRestResponse` class that provides additional properties such as `IsAuthorized`, `Notifications`, and `Data`.
