@@ -21,7 +21,9 @@ namespace RestMinSharp
         Task<RequestResult<T>> PostAsync<T>(string url, object payload);
         Task<RequestResult<T>> PostAsync<T>(string url, string json);
         Task<ERequestResult<T, E>> PostAsync<T, E>(string url, object payload);
-        Task<RequestResult<T>> PutAsync<T>(string url);
+		Task<RequestResult<T>> PostAsync<T>(string url);
+		Task<ERequestResult<T, E>> PostAsync<T, E>(string url);
+		Task<RequestResult<T>> PutAsync<T>(string url);
         Task<RequestResult<T>> PutAsync<T>(string url, object payload);
         Task<ERequestResult<T, E>> PutAsync<T, E>(string url, object payload);
 		string SerializeObject(object obj);
